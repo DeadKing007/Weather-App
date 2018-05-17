@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 info.setIcon(icon);
                 info.setMax_Temp(Max_temp);
                 info.setMin_Temp(Min_temp);
-                info.setLocation("Lucknow");
+                info.setLocation("Kanpur");
                 info.setDate("");
                 info.setIcon(icon);
                 info.setDate(Utility.getTodaysDate());
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.appendPath("data");
                 builder.appendPath("2.5");
                 builder.appendPath("weather");
-                builder.appendQueryParameter("q","Lucknow");
+                builder.appendQueryParameter("q","Kanpur");
                 builder.appendQueryParameter("appid","e41f4d81bd5c7cc90cd395f6a3c18045");
                 builder.appendQueryParameter("mode","json");
                 builder.appendQueryParameter("units","metric");
