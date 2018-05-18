@@ -21,7 +21,7 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView Location,Date,Max_Temp,Min_Temp;
+    private TextView Location,Date,Max_Temp,Min_Temp,Description;
     private ImageView Image;
     private  final String TAG=MainActivity.class.getName();
     @Override
@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         Max_Temp=findViewById(R.id.Max_Temp);
         Min_Temp=findViewById(R.id.Min_Temp);
         Image=findViewById(R.id.Image);
+        Description=findViewById(R.id.Description);
 
     }
 
@@ -173,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
         Location.setText(weatherInfo.getLocation());
         Max_Temp.setText(weatherInfo.getMax_Temp());
         Min_Temp.setText(weatherInfo.getMin_Temp());
+        Description.setText(weatherInfo.getDescription());
         Date.setText(weatherInfo.getDate());
 
         String icon = weatherInfo.getIcon();
