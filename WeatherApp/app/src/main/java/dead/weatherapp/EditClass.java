@@ -11,6 +11,7 @@ import android.widget.Toast;
 public class EditClass extends AppCompatActivity implements View.OnClickListener{
 
     EditText Location;
+    private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
     Button Click;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +20,16 @@ public class EditClass extends AppCompatActivity implements View.OnClickListener
         Location=findViewById(R.id.Location1);
         Click=findViewById(R.id.Click);
         Click.setOnClickListener(this);
+        }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if (resultCode == MainActivity.RESULT_OK && requestCode==SECOND_ACTIVITY_REQUEST_CODE ) {
 
-
+            Toast.makeText(this, "Enter Correct City", Toast.LENGTH_SHORT).show();
+        }
     }
-
 
 
     @Override
@@ -35,15 +40,12 @@ public class EditClass extends AppCompatActivity implements View.OnClickListener
             if (id == R.id.Click) {
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra("Key", location);
-                startActivity(intent);
+                startActivityForResult(intent,SECOND_ACTIVITY_REQUEST_CODE);
             }
         }else
             Toast.makeText(this,"Enter Location",Toast.LENGTH_SHORT).show();
 
-        String a=getIntent().getStringExtra("Return");
-        if(a=="0") {
-            Toast.makeText(this, "Enter Correct City", Toast.LENGTH_SHORT).show();
-        }
+
 
     }
 }

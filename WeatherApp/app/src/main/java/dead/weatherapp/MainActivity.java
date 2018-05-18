@@ -231,9 +231,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             else {
-                Intent intent=new Intent(this,EditClass.class);
-                intent.putExtra("Return","0");
-                startActivity(intent);
+
+                Intent resultIntent = new Intent();
+
+                setResult(RESULT_OK, resultIntent);
+                finish();
 
             }
 
