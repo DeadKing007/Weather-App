@@ -1,11 +1,14 @@
 package dead.weatherapp;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView Location,Date,Max_Temp,Min_Temp,Description;
     private ImageView Image;
     private  final String TAG=MainActivity.class.getName();
+    String code;
+    String Receive;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +39,15 @@ public class MainActivity extends AppCompatActivity {
         Min_Temp=findViewById(R.id.Min_Temp);
         Image=findViewById(R.id.Image);
         Description=findViewById(R.id.Description);
+        Image.setVisibility(View.INVISIBLE);
+        Location.setVisibility(View.INVISIBLE);
+        Min_Temp.setVisibility(View.INVISIBLE);
+        Max_Temp.setVisibility(View.INVISIBLE);
+
+        Date.setVisibility(View.INVISIBLE);
+        Description.setVisibility(View.INVISIBLE);
+
+         Receive=getIntent().getStringExtra("Key");
 
     }
 
@@ -57,11 +71,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private WeatherInfo getparsedJSON(String information) {
-            WeatherInfo info = null;
+            WeatherInfo info =new WeatherInfo();;
 
             try {
                 JSONObject rawobject=new JSONObject(information);
                 JSONObject object=rawobject.getJSONObject("main");
+                code=rawobject.getString("cod");
+
 
                 JSONArray array=rawobject.getJSONArray("weather");
                 JSONObject arrayobject=array.getJSONObject(0);
@@ -72,16 +88,17 @@ public class MainActivity extends AppCompatActivity {
                 String Max_temp=object.getString("temp_max");
                 String Humidity=object.getString("humidity");
 
-                info=new WeatherInfo();
+
                 info.setDescription(description);
                 info.setHumidity(Humidity);
                 info.setIcon(icon);
                 info.setMax_Temp(Max_temp);
                 info.setMin_Temp(Min_temp);
-                info.setLocation("Kanpur");
+                info.setLocation(Receive);
                 info.setDate("");
                 info.setIcon(icon);
                 info.setDate(Utility.getTodaysDate());
+                info.setCode(code);
 
 
 
@@ -107,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.appendPath("data");
                 builder.appendPath("2.5");
                 builder.appendPath("weather");
-                builder.appendQueryParameter("q","Kanpur");
+                builder.appendQueryParameter("q",Receive);
                 builder.appendQueryParameter("appid","e41f4d81bd5c7cc90cd395f6a3c18045");
                 builder.appendQueryParameter("mode","json");
                 builder.appendQueryParameter("units","metric");
@@ -171,34 +188,54 @@ public class MainActivity extends AppCompatActivity {
 
     private void setInterface(WeatherInfo weatherInfo) {
 
-        Location.setText(weatherInfo.getLocation());
-        Max_Temp.setText(weatherInfo.getMax_Temp());
-        Min_Temp.setText(weatherInfo.getMin_Temp());
-        Description.setText(weatherInfo.getDescription());
-        Date.setText(weatherInfo.getDate());
+            if (weatherInfo.getIcon()!=null) {
 
-        String icon = weatherInfo.getIcon();
+                Image.setVisibility(View.VISIBLE);
+                Location.setVisibility(View.VISIBLE);
+                Min_Temp.setVisibility(View.VISIBLE);
+                Max_Temp.setVisibility(View.VISIBLE);
+
+                Date.setVisibility(View.VISIBLE);
+                Description.setVisibility(View.VISIBLE);
 
 
-        // Handle all conditions for weather images
-        if ("04d".equals(icon) || "04n".equals(icon)){
-            Image.setImageResource(R.drawable.broken_clouds);
-        }else if ("01d".equals(icon) || "01n".equals(icon)){
-            Image.setImageResource(R.drawable.clear_sky);
-        }else if ("02d".equals(icon) || "02n".equals(icon)){
-            Image.setImageResource(R.drawable.fewclouds);
-        }else if ("03d".equals(icon) || "03n".equals(icon)){
-            Image.setImageResource(R.drawable.scattered_clouds);
-        }else if ("09d".equals(icon) || "09n".equals(icon)){
-            Image.setImageResource(R.drawable.shower_rain);
-        }else if ("10d".equals(icon) || "10n".equals(icon)){
-            Image.setImageResource(R.drawable.rain);
-        }else if ("11d".equals(icon) || "11n".equals(icon)){
-            Image.setImageResource(R.drawable.thunderstorm);
-        }else if ("13d".equals(icon) || "13n".equals(icon)){
-            Image.setImageResource(R.drawable.snow);
-        }else if ("50d".equals(icon) || "50n".equals(icon)){
-            Image.setImageResource(R.drawable.mist);
-        }
+                Location.setText(weatherInfo.getLocation());
+                Max_Temp.setText(weatherInfo.getMax_Temp());
+                Min_Temp.setText(weatherInfo.getMin_Temp());
+                Description.setText(weatherInfo.getDescription());
+                Date.setText(weatherInfo.getDate());
+
+
+                String icon = weatherInfo.getIcon();
+
+
+                // Handle all conditions for weather images
+                if ("04d".equals(icon) || "04n".equals(icon)) {
+                    Image.setImageResource(R.drawable.broken_clouds);
+                } else if ("01d".equals(icon) || "01n".equals(icon)) {
+                    Image.setImageResource(R.drawable.clearsky);
+                } else if ("02d".equals(icon) || "02n".equals(icon)) {
+                    Image.setImageResource(R.drawable.fewclouds);
+                } else if ("03d".equals(icon) || "03n".equals(icon)) {
+                    Image.setImageResource(R.drawable.scattered_clouds);
+                } else if ("09d".equals(icon) || "09n".equals(icon)) {
+                    Image.setImageResource(R.drawable.shower_rain);
+                } else if ("10d".equals(icon) || "10n".equals(icon)) {
+                    Image.setImageResource(R.drawable.rain);
+                } else if ("11d".equals(icon) || "11n".equals(icon)) {
+                    Image.setImageResource(R.drawable.thunderstorm);
+                } else if ("13d".equals(icon) || "13n".equals(icon)) {
+                    Image.setImageResource(R.drawable.snow);
+                } else if ("50d".equals(icon) || "50n".equals(icon)) {
+                    Image.setImageResource(R.drawable.mist);
+                }
+            }
+            else {
+                Intent intent=new Intent(this,EditClass.class);
+                intent.putExtra("Return","0");
+                startActivity(intent);
+
+            }
+
     }
 }

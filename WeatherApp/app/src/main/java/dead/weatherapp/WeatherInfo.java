@@ -3,6 +3,16 @@ package dead.weatherapp;
 public class WeatherInfo {
 
     private String Location,Max_Temp,Min_Temp,Humidity,description;
+    String code;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     private String Date,Icon;
 
 
